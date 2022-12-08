@@ -14,6 +14,7 @@ export default class tikTakToe {
     */
         this.turnOf = Math.random() >= 0.5 ? player1 : player2; // choose one player random to start the game
         this.gameRunning = true; // if game is running
+        this.turnsHappend = 0; // when a person do a move, this increase 1, when it is = to 9 returns tie
     }
 
     get getBoard() {
@@ -36,6 +37,11 @@ export default class tikTakToe {
             return { error: "this place allready exists" };
         }
         this.board[coord[0]][coord[1]] = this.turnOf;
+        this.turnsHappend++;
+        if (this.turnsHappend === 9) {
+            this.gameRunning = false;
+            return { tie: true };
+        }
 
         if (this._checkWin().win === "any") {
             this.turnOf == this.player1

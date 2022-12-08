@@ -40,7 +40,7 @@ const checkIfRoomIsFilled = (roomCode) => {
 /* Socket.io listeners */
 io.on("connection", (socket) => {
     console.log(`A new user connected, id: ${socket.id}`);
-    //TODO: responder errores y calcular desconexiones para extraerlas de la room
+    //TODO: cuando la gente pida unirse a una room, verificar si ese código existe
     socket.on("code", (code) => {
         // console.log(code, socket.id);
         io.in(socket.id).emit("code", { code, id: socket.id }); // resend msg
@@ -82,7 +82,7 @@ io.on("connection", (socket) => {
                 socket.join(socket.id);
                 console.log(`New user added to room.\nRooms: `, usersAndRooms);
             } else {
-                console.log("e 97"); //error in line 97 xd
+                console.log("e 85"); //error in line 97 xd
             }
             if (
                 usersAndRooms[code].players[0] ===
@@ -103,12 +103,6 @@ io.on("connection", (socket) => {
         }
         //?console.log(usersAndRooms);
     });
-    socket.on("clear", () => {
-        // If in the front-end happend an error, call this method and leave all the rooms //!....
-        //!console.log([...socket.rooms][1]);
-        //socket.leave(socket.rooms[1]);
-        for (let item of mySet1) socket.leave(item);
-    });
     socket.on("gamePetition", (code) => {
         console.log(`Petition recieved with code: ${code}`);
         // if room doesnt exists
@@ -119,7 +113,7 @@ io.on("connection", (socket) => {
         }
         // if game allready has started
         if (usersAndRooms[code].startedGame) {
-            socket.to(socket.id).emit("error", "game allready started");
+            socket.to(socket.id).emit("warning", "game allready started");
             console.log(
                 `emmited to: ${socket.id} the game allready started error`
             );
@@ -154,24 +148,19 @@ io.on("connection", (socket) => {
             return;
         }
     });
+    //TODO: implementar diferencia entre error y warning
     socket.on("move", ({ code, coord }) => {
         console.log(`Move recieved with code: ${code} and coord: ${coord}`);
         if (
-            (usersAndRooms[code].players[0] === socket.id ||
-                usersAndRooms[code].players[1] === socket.id) &&
-            usersAndRooms[code].startedGame
+            // (usersAndRooms[code].players[0] === socket.id ||
+            //     usersAndRooms[code].players[1] === socket.id) &&
+            // usersAndRooms[code].startedGame
+            usersAndRooms[code].game &&
+            usersAndRooms[code].game.turnOf === socket.id // Verify if is the user's turn
         ) {
             console.log(11);
             const partyStatus = usersAndRooms[code].game.newMove(coord);
             if (partyStatus.win) {
-                // io.in(code).emit("win", {
-                //     winner: usersAndRooms[code].game.winner,
-                //     board: usersAndRooms[code].game.board,
-                // });
-
-                // usersAndRooms[code].game.players().forEach((user) => {
-                //     console.log(user);
-                // });
                 io.in(usersAndRooms[code].game.winner).emit("win", {
                     msg: "You win",
                     board: usersAndRooms[code].game.board,
@@ -184,6 +173,28 @@ io.on("connection", (socket) => {
                     `win emmited to: ${code} with winner: ${usersAndRooms[code].game.winner}.\n\tGame: `,
                     usersAndRooms[code].game
                 );
+                console.log(`Going to delete: ${code}`);
+                delete usersAndRooms[code];
+                console.log(`Room ${code} deleted`);
+                return;
+            }
+            if (partyStatus.error) {
+                io.in(socket.id).emit("warning", "invalid move");
+                console.log(`emmited to: ${socket.id} invalid move`);
+                return;
+            }
+            if (partyStatus.tie) {
+                io.in(code).emit("tie", {
+                    msg: "Tie",
+                    board: usersAndRooms[code].game.board,
+                });
+                console.log(
+                    `tie emmited to: ${code}.\n\tGame: `,
+                    usersAndRooms[code].game
+                );
+                console.log(`Going to delete: ${code}`);
+                delete usersAndRooms[code];
+                console.log(`Room ${code} deleted`);
                 return;
             }
             io.in(code).emit("haveToMove", {
@@ -195,8 +206,32 @@ io.on("connection", (socket) => {
                 usersAndRooms[code].game
             );
         } else {
-            console.log("err11");
+            console.log("Is not our turn!"); /// only to debug
+            io.to(socket.id).emit("warning", "It's not your turn!");
         }
+    });
+    socket.on("disconnecting", () => {
+        socket.emit("user has left", socket.id);
+        console.log(`User ${socket.id} has left`);
+        Object.values(usersAndRooms).forEach((roomProps, index) => {
+            if (
+                roomProps.players[0] === socket.id ||
+                roomProps.players[1] === socket.id
+            ) {
+                const roomCode = Object.keys(usersAndRooms)[index];
+
+                io.to(roomCode).emit("error", "Someone leave the game.");
+                console.log(`Someone leave the game in room: ${roomCode}`);
+                io.in(roomCode).socketsLeave(roomCode);
+
+                console.log(`Going to delete ${roomCode}`);
+                delete usersAndRooms[roomCode];
+                console.log("deleted");
+            }
+            //?socket.leave(Object.keys(usersAndRooms)[index]);
+        });
+        socket.leave(socket.id);
+        console.log(`Rooms remaining: `, socket.rooms);
     });
 });
 

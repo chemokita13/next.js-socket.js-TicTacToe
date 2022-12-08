@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+
 import { toast } from "react-toastify";
 
 import { io } from "socket.io-client";
@@ -10,13 +11,15 @@ function Code() {
     const router = useRouter();
     const { code } = router.query;
 
+    ///const customId = "custom-id-yes"; //To add a custom toastId and avoid duplicates
+
     // TODO: arreglar los useState
-    const [canMove, setCanMove] = useState(false); // if is the turn of the user ore not
+    const [canMove, setCanMove] = useState(false); // if is the turn of the user or not
     const [gameBoard, setGameBoard] = useState([[], [], []]);
     const [mySocketId, setMySocketId] = useState("");
     const [whoMoves, setWhoMoves] = useState(""); //!
     const [gameStarted, setGameStarted] = useState(false);
-    const [gameEnded, setGameEnded] = useState(false);
+    ///const [gameEnded, setGameEnded] = useState(false);
 
     const returnXorOorSpace = ([x, y]) => {
         console.log(gameBoard, mySocketId);
@@ -48,70 +51,114 @@ function Code() {
         socket.emit("gamePetition", code);
     };
 
-    !gameEnded &&
-        useEffect(() => {
-            /* Only runs when page charge 1 time */
-            if (code) {
-                /* This run 2 times, first with code=null in hidratation reactjs and second with code=code working with nextjs */
-                alert(code);
-                socket.emit("code", code);
-            }
-        }, [code]);
+    /// !gameEnded &&
+    useEffect(() => {
+        /* Only runs when page charge 1 time */
+        if (code) {
+            /* This run 2 times, first with code=null in hidratation reactjs and second with code=code working with nextjs */
+            alert(code);
+            socket.emit("code", code);
+        }
+    }, [code]);
 
-    !gameEnded &&
-        useEffect(() => {
-            alert("updated");
-            socket.on("code", ({ code, id }) => {
+    /// !gameEnded &&
+    useEffect(() => {
+        alert("updated");
+        socket.on("code", ({ code, id }) => {
+            console.log(`Code returned: ${code}`);
+            setMySocketId(id);
+            console.log("Socket id: " + id, mySocketId);
+        });
+        socket.on("haveToMove", ({ board, move }) => {
+            setGameStarted(true);
+            setGameBoard(board);
+            //?alert(`Moves: ${move}`);
+            setWhoMoves(move);
+            if (move === socket.id) {
+                toast("Its your turn!", {
+                    position: "top-center",
+                    toastId: "Turn_id",
+                    ///autoClose: 1000, //only for debug
+                });
+            }
+            console.log("havetomove", move, socket.id);
+        });
+        socket.on("status", (statusDescription) => {
+            toast.info(statusDescription, { toastId: "Status_id" });
+            console.log("status", statusDescription);
+        });
+        // If a warn ocurred the game can continue
+        socket.on("warn", (warnDescription) => {
+            toast.warn(warnDescription, {
+                position: "top-center",
+                toastId: "Warn_id",
+            });
+            console.warn("warn", warnDescription);
+        });
+        // If an error ocurred the game can not continue
+        socket.on("error", (errorDescription) => {
+            toast.error(errorDescription, {
+                toastId: "Error_id",
+            });
+            router.push("/");
+            console.error("error", errorDescription);
+        });
+        socket.on("win", ({ board, msg }) => {
+            toast.success(msg, { toastId: "Win_id" });
+            router.push("/");
+        });
+        socket.on("tie", ({ msg, board }) => {
+            toast("Tie!", { toastId: "Tie_id" });
+            router.push("/");
+        });
+        return () => {
+            socket.off("code", ({ code, id }) => {
                 console.log(`Code returned: ${code}`);
                 setMySocketId(id);
                 console.log("Socket id: " + id, mySocketId);
             });
-            socket.on("haveToMove", ({ board, move }) => {
+            socket.off("haveToMove", ({ board, move }) => {
                 setGameStarted(true);
                 setGameBoard(board);
                 //?alert(`Moves: ${move}`);
                 setWhoMoves(move);
+                if (whoMoves === mySocketId) {
+                    toast("Its your turn!", {
+                        position: "top-center",
+                        toastId: "Turn_id",
+                        ///autoClose: 1000,
+                    });
+                }
                 console.log("havetomove", board, move);
             });
-            socket.on("status", (statusDescription) => {
-                toast(statusDescription);
+            socket.off("status", (statusDescription) => {
+                toast.info(statusDescription, { toastId: "Status_id" });
                 console.log("status", statusDescription);
             });
-            socket.on("error", (errorDescription) => {
-                alert(errorDescription);
+            socket.off("warn", (warnDescription) => {
+                toast.warn(warnDescription, {
+                    position: "top-center",
+                    toastId: "Warn_id",
+                });
+                console.warn("warn", warnDescription);
+            });
+            socket.off("error", (errorDescription) => {
+                toast.error(errorDescription, {
+                    toastId: "Error_id",
+                });
+                router.push("/");
                 console.error("error", errorDescription);
             });
-            socket.on("win", ({ board, msg }) => {
-                toast.success(msg);
+            socket.off("win", ({ board, msg }) => {
+                toast.success(msg, { toastId: "Win_id" });
                 router.push("/");
             });
-            return () => {
-                socket.off("code", ({ code, id }) => {
-                    console.log(`Code returned: ${code}`);
-                    setMySocketId(id);
-                    console.log("Socket id: " + id, mySocketId);
-                });
-                socket.off("haveToMove", ({ board, move }) => {
-                    setGameStarted(true);
-                    setGameBoard(board);
-                    //?alert(`Moves: ${move}`);
-                    setWhoMoves(move);
-                    console.log("havetomove", board, move);
-                });
-                socket.off("status", (statusDescription) => {
-                    toast(statusDescription);
-                    console.log("status", statusDescription);
-                });
-                socket.off("error", (errorDescription) => {
-                    alert(errorDescription);
-                    console.error("error", errorDescription);
-                });
-                socket.off("win", ({ board, msg }) => {
-                    toast.success(msg);
-                    router.push("/");
-                });
-            };
-        }, []);
+            socket.off("tie", ({ msg, board }) => {
+                toast("Tie!", { toastId: "Tie_id" });
+                router.push("/");
+            });
+        };
+    }, []);
 
     return (
         <div className="">
