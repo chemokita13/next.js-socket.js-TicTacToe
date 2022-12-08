@@ -108,7 +108,7 @@ io.on("connection", (socket) => {
         }
         // if is the first petition
         if (usersAndRooms[code].gameStartPetition === 0) {
-            socket.emit("status", "Waiting for you. Press: 'Start game'");
+            socket.emit("status", "Waiting for the other player...");
             socket
                 .to(code)
                 .emit("status", "Waiting for you. Press: 'Start game'");
