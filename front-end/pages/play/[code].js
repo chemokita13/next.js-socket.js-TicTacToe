@@ -11,15 +11,12 @@ function Code() {
     const router = useRouter();
     const { code } = router.query;
 
-    ///const customId = "custom-id-yes"; //To add a custom toastId and avoid duplicates
-
     // TODO: arreglar los useState
     const [canMove, setCanMove] = useState(false); // if is the turn of the user or not
     const [gameBoard, setGameBoard] = useState([[], [], []]);
     const [mySocketId, setMySocketId] = useState("");
     const [whoMoves, setWhoMoves] = useState(""); //!
     const [gameStarted, setGameStarted] = useState(false);
-    ///const [gameEnded, setGameEnded] = useState(false);
 
     const returnXorOorSpace = ([x, y]) => {
         console.log(gameBoard, mySocketId);
@@ -41,6 +38,7 @@ function Code() {
     };
 
     const handleMove = (coords) => {
+        //!
         //*if (canMove) {
         socket.emit("move", { coord: coords, code });
         setCanMove(false);
@@ -54,14 +52,13 @@ function Code() {
     /// !gameEnded &&
     useEffect(() => {
         /* Only runs when page charge 1 time */
+        /* But this run 2 times, first with code=null in hidratation reactjs and second with code=code working with nextjs I think this only happens in dev mode*/
         if (code) {
-            /* This run 2 times, first with code=null in hidratation reactjs and second with code=code working with nextjs */
             alert(code);
             socket.emit("code", code);
         }
     }, [code]);
 
-    /// !gameEnded &&
     useEffect(() => {
         alert("updated");
         socket.on("code", ({ code, id }) => {
@@ -78,7 +75,7 @@ function Code() {
                 toast("Its your turn!", {
                     position: "top-center",
                     toastId: "Turn_id",
-                    ///autoClose: 1000, //only for debug
+                    autoClose: 1000,
                 });
             }
             console.log("havetomove", move, socket.id);
