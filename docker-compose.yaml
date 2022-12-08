@@ -1,0 +1,13 @@
+services:
+  front: 
+    image: next3enraya
+    container_name: front-end
+    ports: [3000:3000]
+    build: ./front-end
+    command: npm run dev
+  back:
+    image: next3enraya-b
+    container_name: back-end
+    build: ./back-end
+    ports: [4000:4000]
+    command: npm run dev
