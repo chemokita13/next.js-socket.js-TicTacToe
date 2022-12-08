@@ -53,6 +53,7 @@ io.on("connection", (socket) => {
             };
             socket.to(socket.id).emit("code", { code, id: socket.id });
             //console.log(`New room.\nRooms:  `, usersAndRooms);
+            return;
         } else {
             /* If room allready exists */
             if (!checkIfRoomIsFilled(code)) {
@@ -107,7 +108,10 @@ io.on("connection", (socket) => {
         }
         // if is the first petition
         if (usersAndRooms[code].gameStartPetition === 0) {
-            io.in(code).emit("status", "waiting for other players...");
+            socket.emit("status", "Waiting for you. Press: 'Start game'");
+            socket
+                .to(code)
+                .emit("status", "Waiting for you. Press: 'Start game'");
             usersAndRooms[code].gameStartPetition = 1;
             //console.log(`emmited to: ${code} waiting for other player `);
             return;
