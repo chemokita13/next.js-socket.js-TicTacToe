@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:4000", { forceNew: true });
+const socket = io("http://localhost:4000");
 
 function Code() {
     const router = useRouter();
@@ -16,7 +16,7 @@ function Code() {
     const [canMove, setCanMove] = useState(false); // if is the turn of the user or not
     const [gameBoard, setGameBoard] = useState([[], [], []]);
     const [mySocketId, setMySocketId] = useState("");
-    const [whoMoves, setWhoMoves] = useState(""); //!
+    const [whoMoves, setWhoMoves] = useState(""); // who moves
     const [gameStarted, setGameStarted] = useState(false);
 
     const returnXorOorSpace = ([x, y]) => {
@@ -154,7 +154,7 @@ function Code() {
                 router.push("/");
             });
         };
-    }, []);
+    });
 
     return (
         <div className="">
@@ -177,8 +177,8 @@ function Code() {
                         gameStarted && "translate-x-[-101%]"
                     }`}
                 >
-                    Share whit our friend the same url and both press: 'Start
-                    game'
+                    Share whit our friend the same url and both press:
+                    &apos;Start game&apos;
                 </div>
 
                 <div className="absolute bg-sky-900 grid grid-rows-3 grid-cols-3 w-[270px] sm:w-[540px] h-[270px] sm:h-[540px] border rounded-xl p-5 gap-5  my-12 sm:my-16 border-sky-500 text-3xl sm:text-5xl text-center font-sans text-sky-600">

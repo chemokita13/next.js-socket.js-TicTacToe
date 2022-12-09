@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:4000/index", { forceNew: true });
+const socket = io("http://localhost:4000/index");
 
 export default function Home() {
     const router = useRouter();
@@ -48,7 +48,7 @@ export default function Home() {
                 toastId: "toastInfo",
             });
         });
-    }, [socket]);
+    });
 
     return (
         <div className="bg-sky-800 h-screen w-screen flex flex-col justify-center">
