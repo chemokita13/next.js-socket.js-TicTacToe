@@ -9,6 +9,9 @@ module.exports = {
             colors: {
                 "sky-900-trans": "rgba(12, 74, 110, 0.8)",
             },
+            screens: {
+                xs: "415px",
+            },
         },
     },
     plugins: [],

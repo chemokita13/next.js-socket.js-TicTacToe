@@ -57,20 +57,20 @@ export default function Home() {
             </Head>
 
             <div className=" flex flex-col text-center items-center mb-72 cursor-default">
-                <header className="bg-sky-900 w-[400px] h-[150px] border rounded-xl border-sky-500 text-center font-sans text-sky-600 text-4xl font-extrabold m-3 flex items-center justify-center">
-                    <div className="border bg-sky-300 rounded-lg border-sky-400 flex items-center justify-center m-1 p-1 w-[100px] h-[100px]">
+                <header className="bg-sky-900 w-[300px] xs:w-[400px] h-[150px] border rounded-xl border-sky-500 text-center font-sans text-sky-600 text-3xl xs:text-4xl font-extrabold m-3 flex items-center justify-center">
+                    <div className="border bg-sky-300 rounded-lg border-sky-400 flex items-center justify-center m-1 p-1 w-[75px] xs:w-[100px] h-[75px] xs:h-[100px]">
                         Tik
                     </div>
-                    <div className="border bg-sky-300 rounded-lg border-sky-400 flex items-center justify-center m-1 p-1 w-[100px] h-[100px]">
+                    <div className="border bg-sky-300 rounded-lg border-sky-400 flex items-center justify-center m-1 p-1 w-[75px] xs:w-[100px] h-[75px] xs:h-[100px]">
                         Tak
                     </div>
-                    <div className="border bg-sky-300 rounded-lg border-sky-400 flex items-center justify-center m-1 ml-3 p-1 w-[100px] h-[100px] -rotate-12">
+                    <div className="border bg-sky-300 rounded-lg border-sky-400 flex items-center justify-center m-1 ml-3 p-1 w-[75px] xs:w-[100px] h-[75px] xs:h-[100px] -rotate-12">
                         <div className="rotate-12">Toe</div>
                     </div>
                 </header>
                 <input
                     type="text"
-                    className="w-1/2 m-2 placeholder:text-center placeholder:text-sky-700 p-1 rounded-xl bg-sky-300 text-center text-sky-600 font-semibold"
+                    className="w-[75%] xs:w-1/2 m-2 placeholder:text-center placeholder:text-sky-700 p-1 rounded-xl bg-sky-300 text-center text-sky-600 font-semibold"
                     placeholder="Enter a code to create a room"
                     onChange={(e) => setInputCodeValue(e.target.value)}
                 />
