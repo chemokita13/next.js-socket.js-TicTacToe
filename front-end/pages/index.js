@@ -1,20 +1,54 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:4000/index", { forceNew: true });
 
 export default function Home() {
+    const router = useRouter();
     const [inputCodeValue, setInputCodeValue] = useState("");
 
     const handleSubmitButton = () => {
-        if (inputCodeValue != "" && inputCodeValue.indexOf(" ") === 0) {
-            console.log(8);
+        if (
+            inputCodeValue != "" &&
+            !inputCodeValue.includes(" ") &&
+            !inputCodeValue.includes("?") &&
+            !inputCodeValue.includes("/") &&
+            !inputCodeValue.includes(" ")
+        ) {
+            socket.emit("VerifyIfCanCreateARoom", inputCodeValue);
         } else {
-            toast.warning("Code can not have spaces or be empty", {
+            toast.warning("Code can not have special chars or be empty", {
                 className: "w-[200%] bg-sky-900-trans items-center left-[-50%]",
                 position: "top-center",
+                toastId: "toastWarn",
             });
         }
     };
+
+    useEffect(() => {
+        socket.on("CanCreateARoom", ({ bool, code }) => {
+            if (!bool) {
+                toast.warning(`Code: ${code} is allready taken`, {
+                    className:
+                        "w-[200%] bg-sky-900-trans items-center left-[-50%]",
+                    position: "top-center",
+                    toastId: "toastWarn",
+                });
+            } else {
+                router.push(`/play/${code}`);
+            }
+        });
+        socket.on("info", (infoDes) => {
+            toast.info(infoDes, {
+                className: "w-[200%] bg-sky-900-trans items-center left-[-50%]",
+                position: "top-center",
+                toastId: "toastInfo",
+            });
+        });
+    }, [socket]);
 
     return (
         <div className="bg-sky-800 h-screen w-screen flex flex-col justify-center">
@@ -38,6 +72,7 @@ export default function Home() {
                     type="text"
                     className="w-1/2 m-2 placeholder:text-center placeholder:text-sky-700 p-1 rounded-xl bg-sky-300 text-center text-sky-600 font-semibold"
                     placeholder="Enter a code to share to your friend and start a party"
+                    onChange={(e) => setInputCodeValue(e.target.value)}
                 />
                 <button
                     className="w-[200px] p-3 bg-sky-500 border border-sky-600 text-sky-200 font-extrabold m-1 rounded-full"

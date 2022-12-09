@@ -1,16 +1,17 @@
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { toast } from "react-toastify";
 
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:4000");
+const socket = io("http://localhost:4000", { forceNew: true });
 
 function Code() {
     const router = useRouter();
     const { code } = router.query;
+    ///const shareUrlRef = useRef();
 
     // TODO: arreglar los useState
     const [canMove, setCanMove] = useState(false); // if is the turn of the user or not
@@ -55,13 +56,11 @@ function Code() {
         /* Only runs when page charge 1 time */
         /* But this run 2 times, first with code=null in hidratation reactjs and second with code=code working with nextjs I think this only happens in dev mode*/
         if (code) {
-            alert(code);
             socket.emit("code", code);
         }
     }, [code]);
 
     useEffect(() => {
-        alert("updated");
         socket.on("code", ({ code, id }) => {
             console.log(`Code returned: ${code}`);
             setMySocketId(id);
@@ -170,7 +169,11 @@ function Code() {
                     Opponent: O
                 </div>
                 {!gameStarted && (
-                    <div className="sticky self-start text-sky-800 w-80 my-auto p-10 text-left bg-sky-100 border rounded-r-full border-sky-400">
+                    <div
+                        ///ref={shareUrlRef}
+                        className=" transition-all sticky self-start text-sky-800 w-80
+                    my-auto p-10 text-left bg-sky-100 border rounded-r-full border-sky-400"
+                    >
                         Share whit our friend the same url and both press:
                         'Start game'
                     </div>

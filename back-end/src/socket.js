@@ -18,11 +18,20 @@ const checkIfRoomExists = (roomCode) => {
         return true;
     }
 };
+const checkIfRoomIsFilledWithTheSameUsers = (code) => {
+    /* If room is filled with the same user. I DONT KNOW WHY HAPPENS BUT HAPPENS THAT */
+    if (usersAndRooms[code].players[0] === usersAndRooms[code].players[1]) {
+        return true;
+    } else {
+        return false;
+    }
+};
 const checkIfRoomIsFilled = (roomCode) => {
     /* Check if a room allready is filled with the two players or not (A room cannot have more than two players)*/
     if (
         usersAndRooms[roomCode] &&
-        usersAndRooms[roomCode].players.length >= 2 // Rooms can not have more than 2 players.
+        usersAndRooms[roomCode].players.length >= 2
+        // Rooms can not have more than 2 players.
     ) {
         return true;
     } else {
@@ -70,11 +79,8 @@ io.on("connection", (socket) => {
                 //console.log(`New user added to room.\nRooms: `, usersAndRooms);
                 return;
             }
-            /* If room is filled with the same user. I DONT KNOW WHY HAPPENS BUT HAPPENS THAT */
-            if (
-                usersAndRooms[code].players[0] ===
-                usersAndRooms[code].players[1]
-            ) {
+
+            if (checkIfRoomIsFilledWithTheSameUsers(code)) {
                 usersAndRooms = {
                     ...usersAndRooms,
                     [code]: {
@@ -217,6 +223,27 @@ io.on("connection", (socket) => {
         });
         socket.leave(socket.id);
         //console.log(`Rooms remaining: `, socket.rooms);
+    });
+});
+const indexNameSpace = io.of("/index"); // namespace to verify if a user can join the room
+indexNameSpace.on("connection", (socket) => {
+    //?socket.emit("connected", "You are connected to the index namespace");
+    socket.on("VerifyIfCanCreateARoom", (code) => {
+        if (!checkIfRoomExists(code)) {
+            socket.emit("CanCreateARoom", { bool: true, code });
+            return;
+        }
+        if (
+            !checkIfRoomIsFilled(code) ||
+            checkIfRoomIsFilledWithTheSameUsers(code)
+        ) {
+            socket.emit(
+                "info",
+                "Room is allready created, please ask your friend for the url or create a new one."
+            );
+            return;
+        }
+        socket.emit("CanCreateARoom", { bool: false, code });
     });
 });
 
