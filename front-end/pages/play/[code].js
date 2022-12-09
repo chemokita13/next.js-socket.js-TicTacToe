@@ -5,8 +5,10 @@ import { useEffect, useState, useRef } from "react";
 import { toast } from "react-toastify";
 
 import { io } from "socket.io-client";
+import { BACK_URL } from "../../config.js";
 
-const socket = io("http://localhost:4000");
+console.log("using back port: ", BACK_URL);
+const socket = io(BACK_URL);
 
 function Code() {
     const router = useRouter();

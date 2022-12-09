@@ -3,8 +3,10 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
+import { BACK_URL } from "../config";
 
-const socket = io("http://localhost:4000/index");
+console.log("using back port: ", BACK_URL);
+const socket = io(BACK_URL + "/index");
 
 export default function Home() {
     const router = useRouter();
