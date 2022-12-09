@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 import { BACK_URL } from "../../config.js";
 
-console.log("using back port: ", BACK_URL);
+//console.log("using back port: ", BACK_URL);
 const socket = io(BACK_URL);
 
 function Code() {
@@ -20,12 +20,10 @@ function Code() {
     const [gameStarted, setGameStarted] = useState(false); // if the game started or not
 
     const returnXorOorSpace = ([x, y]) => {
-        console.log(gameBoard, mySocketId);
         if (gameBoard && mySocketId) {
             if (gameBoard[x][y] === mySocketId) {
                 return "X";
             } else if (gameBoard[x][y]) {
-                console.log(3, gameBoard[x][y]);
                 return "O";
             } else {
                 return " ";
@@ -54,14 +52,11 @@ function Code() {
 
     useEffect(() => {
         socket.on("code", ({ code, id }) => {
-            console.log(`Code returned: ${code}`);
             setMySocketId(id);
-            console.log("Socket id: " + id, mySocketId);
         });
         socket.on("haveToMove", ({ board, move }) => {
             setGameStarted(true);
             setGameBoard(board);
-            //?alert(`Moves: ${move}`);
             setWhoMoves(move);
             if (move === socket.id) {
                 toast("Its your turn!", {
@@ -98,14 +93,11 @@ function Code() {
         });
         return () => {
             socket.off("code", ({ code, id }) => {
-                console.log(`Code returned: ${code}`);
                 setMySocketId(id);
-                console.log("Socket id: " + id, mySocketId);
             });
             socket.off("haveToMove", ({ board, move }) => {
                 setGameStarted(true);
                 setGameBoard(board);
-                //?alert(`Moves: ${move}`);
                 setWhoMoves(move);
                 if (whoMoves === mySocketId) {
                     toast("Its your turn!", {

@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 import { BACK_URL } from "../config";
 
-console.log("using back port: ", BACK_URL);
+//console.log("using back port: ", BACK_URL);
 const socket = io(BACK_URL + "/index");
 
 export default function Home() {
