@@ -14,25 +14,20 @@ function Code() {
     const router = useRouter();
     const { code } = router.query;
 
-    // TODO: arreglar los useState
-    const [canMove, setCanMove] = useState(false); // if is the turn of the user or not
-    const [gameBoard, setGameBoard] = useState([[], [], []]);
-    const [mySocketId, setMySocketId] = useState("");
+    const [gameBoard, setGameBoard] = useState([[], [], []]); // game board
+    const [mySocketId, setMySocketId] = useState(""); // my socket.io id
     const [whoMoves, setWhoMoves] = useState(""); // who moves
-    const [gameStarted, setGameStarted] = useState(false);
+    const [gameStarted, setGameStarted] = useState(false); // if the game started or not
 
     const returnXorOorSpace = ([x, y]) => {
         console.log(gameBoard, mySocketId);
         if (gameBoard && mySocketId) {
-            console.log(1);
             if (gameBoard[x][y] === mySocketId) {
-                console.log(2, gameBoard[x][y]);
                 return "X";
             } else if (gameBoard[x][y]) {
                 console.log(3, gameBoard[x][y]);
                 return "O";
             } else {
-                console.log(4, gameBoard[x][y], gameBoard);
                 return " ";
             }
         } else {
@@ -41,11 +36,7 @@ function Code() {
     };
 
     const handleMove = (coords) => {
-        //!
-        //*if (canMove) {
         socket.emit("move", { coord: coords, code });
-        setCanMove(false);
-        //*}
     };
 
     const handleStartPetition = () => {
@@ -79,11 +70,9 @@ function Code() {
                     autoClose: 1000,
                 });
             }
-            console.log("havetomove", move, socket.id);
         });
         socket.on("status", (statusDescription) => {
             toast.info(statusDescription, { toastId: "Status_id" });
-            console.log("status", statusDescription);
         });
         // If a warn ocurred the game can continue
         socket.on("warning", (warnDescription) => {
@@ -91,7 +80,6 @@ function Code() {
                 position: "top-center",
                 toastId: "Warn_id",
             });
-            console.warn("warn", warnDescription);
         });
         // If an error ocurred the game can not continue
         socket.on("error", (errorDescription) => {
@@ -99,7 +87,6 @@ function Code() {
                 toastId: "Error_id",
             });
             router.push("/");
-            console.error("error", errorDescription);
         });
         socket.on("win", ({ board, msg }) => {
             toast.success(msg, { toastId: "Win_id" });
@@ -124,28 +111,24 @@ function Code() {
                     toast("Its your turn!", {
                         position: "top-center",
                         toastId: "Turn_id",
-                        ///autoClose: 1000,
+                        autoClose: 1000,
                     });
                 }
-                console.log("havetomove", board, move);
             });
             socket.off("status", (statusDescription) => {
                 toast.info(statusDescription, { toastId: "Status_id" });
-                console.log("status", statusDescription);
             });
             socket.off("warning", (warnDescription) => {
                 toast.warn(warnDescription, {
                     position: "top-center",
                     toastId: "Warn_id",
                 });
-                console.warn("warn", warnDescription);
             });
             socket.off("error", (errorDescription) => {
                 toast.error(errorDescription, {
                     toastId: "Error_id",
                 });
                 router.push("/");
-                console.error("error", errorDescription);
             });
             socket.off("win", ({ board, msg }) => {
                 toast.success(msg, { toastId: "Win_id" });
