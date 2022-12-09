@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 
 import { toast } from "react-toastify";
@@ -85,7 +86,7 @@ function Code() {
             console.log("status", statusDescription);
         });
         // If a warn ocurred the game can continue
-        socket.on("warn", (warnDescription) => {
+        socket.on("warning", (warnDescription) => {
             toast.warn(warnDescription, {
                 position: "top-center",
                 toastId: "Warn_id",
@@ -132,7 +133,7 @@ function Code() {
                 toast.info(statusDescription, { toastId: "Status_id" });
                 console.log("status", statusDescription);
             });
-            socket.off("warn", (warnDescription) => {
+            socket.off("warning", (warnDescription) => {
                 toast.warn(warnDescription, {
                     position: "top-center",
                     toastId: "Warn_id",
@@ -159,12 +160,21 @@ function Code() {
 
     return (
         <div className="">
+            <Head>
+                <title>Playing</title>
+            </Head>
             <div className="bg-sky-800 flex flex-col items-center h-screen">
                 <div className="sticky self-start text-sky-800 w-52 my-auto p-10 text-left bg-sky-100 border rounded-r-full border-sky-400">
                     You: X
                     <br />
                     Opponent: O
                 </div>
+                {!gameStarted && (
+                    <div className="sticky self-start text-sky-800 w-80 my-auto p-10 text-left bg-sky-100 border rounded-r-full border-sky-400">
+                        Share whit our friend the same url and both press:
+                        'Start game'
+                    </div>
+                )}
                 <div className="absolute bg-sky-900 grid grid-rows-3 grid-cols-3 w-[540px] h-[540px] border rounded-xl p-5 gap-5  my-16 border-sky-500 text-5xl text-center font-sans text-sky-600">
                     <button
                         className="p-5 w-[100px] h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"

@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }) {
                 draggable
                 pauseOnHover
                 theme="dark"
-                toastClassName="bg-sky-900"
+                toastClassName="bg-sky-900-trans"
                 bodyClassName="text-center"
                 progressClassName="bg-sky-400"
             />

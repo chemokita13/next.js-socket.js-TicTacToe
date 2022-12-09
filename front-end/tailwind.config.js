@@ -5,7 +5,11 @@ module.exports = {
         "./components/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                "sky-900-trans": "rgba(12, 74, 110, 0.8)",
+            },
+        },
     },
     plugins: [],
 };
