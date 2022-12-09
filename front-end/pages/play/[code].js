@@ -11,7 +11,6 @@ const socket = io("http://localhost:4000", { forceNew: true });
 function Code() {
     const router = useRouter();
     const { code } = router.query;
-    ///const shareUrlRef = useRef();
 
     // TODO: arreglar los useState
     const [canMove, setCanMove] = useState(false); // if is the turn of the user or not
@@ -163,21 +162,25 @@ function Code() {
                 <title>Playing</title>
             </Head>
             <div className="bg-sky-800 flex flex-col items-center h-screen">
-                <div className="sticky self-start text-sky-800 w-52 my-auto p-10 text-left bg-sky-100 border rounded-r-full border-sky-400">
+                <div
+                    className={`transition-transform duration-1000 ease-in-out sticky self-start text-sky-800 w-52 my-auto p-10 text-left bg-sky-100 border rounded-r-full border-sky-400 ${
+                        !gameStarted && "translate-x-[-101%]"
+                    }`}
+                >
                     You: X
                     <br />
                     Opponent: O
                 </div>
-                {!gameStarted && (
-                    <div
-                        ///ref={shareUrlRef}
-                        className=" transition-all sticky self-start text-sky-800 w-80
-                    my-auto p-10 text-left bg-sky-100 border rounded-r-full border-sky-400"
-                    >
-                        Share whit our friend the same url and both press:
-                        'Start game'
-                    </div>
-                )}
+
+                <div
+                    className={` transition-transform duration-1000 ease-in-out sticky self-start text-sky-800 w-80 mt-[-25vh] p-10 text-left bg-sky-100 border rounded-r-full border-sky-400 ${
+                        gameStarted && "translate-x-[-101%]"
+                    }`}
+                >
+                    Share whit our friend the same url and both press: 'Start
+                    game'
+                </div>
+
                 <div className="absolute bg-sky-900 grid grid-rows-3 grid-cols-3 w-[540px] h-[540px] border rounded-xl p-5 gap-5  my-16 border-sky-500 text-5xl text-center font-sans text-sky-600">
                     <button
                         className="p-5 w-[100px] h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
