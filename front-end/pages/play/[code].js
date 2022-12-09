@@ -163,7 +163,7 @@ function Code() {
             </Head>
             <div className="bg-sky-800 flex flex-col items-center h-screen">
                 <div
-                    className={`transition-transform duration-1000 ease-in-out sticky self-start text-sky-800 w-52 my-auto p-10 text-left bg-sky-100 border rounded-r-full border-sky-400 ${
+                    className={`transition-transform duration-1000 ease-in-out sticky self-start text-sky-800 w-36 sm:w-52 mt-96 sm:mt-auto sm:my-auto p-5 sm:p-10 text-left bg-sky-100 border rounded-r-full border-sky-400 ${
                         !gameStarted && "translate-x-[-101%]"
                     }`}
                 >
@@ -173,7 +173,7 @@ function Code() {
                 </div>
 
                 <div
-                    className={` transition-transform duration-1000 ease-in-out sticky self-start text-sky-800 w-80 mt-[-25vh] p-10 text-left bg-sky-100 border rounded-r-full border-sky-400 ${
+                    className={` transition-transform duration-1000 ease-in-out sticky self-start text-sky-800 w-60 sm:w-80 mt-[10vh] sm:mt-[-25vh] p-5 sm:p-10 text-left bg-sky-100 border rounded-r-full border-sky-400 ${
                         gameStarted && "translate-x-[-101%]"
                     }`}
                 >
@@ -181,9 +181,9 @@ function Code() {
                     game'
                 </div>
 
-                <div className="absolute bg-sky-900 grid grid-rows-3 grid-cols-3 w-[540px] h-[540px] border rounded-xl p-5 gap-5  my-16 border-sky-500 text-5xl text-center font-sans text-sky-600">
+                <div className="absolute bg-sky-900 grid grid-rows-3 grid-cols-3 w-[270px] sm:w-[540px] h-[270px] sm:h-[540px] border rounded-xl p-5 gap-5  my-12 sm:my-16 border-sky-500 text-3xl sm:text-5xl text-center font-sans text-sky-600">
                     <button
-                        className="p-5 w-[100px] h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
+                        className="p-5 w-[50px] sm:w-[100px] h-[50px] sm:h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
                         type="text"
                         name="1"
                         onClick={() => handleMove([0, 0])}
@@ -191,7 +191,7 @@ function Code() {
                         {returnXorOorSpace([0, 0])}
                     </button>
                     <button
-                        className="p-5 w-[100px] h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
+                        className="sm:p-5 w-[50px] sm:w-[100px] h-[50px] sm:h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
                         type="text"
                         name="2"
                         onClick={() => handleMove([0, 1])}
@@ -199,7 +199,7 @@ function Code() {
                         {returnXorOorSpace([0, 1])}
                     </button>
                     <button
-                        className="p-5 w-[100px] h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
+                        className="sm:p-5 w-[50px] sm:w-[100px] h-[50px] sm:h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
                         type="text"
                         name="3"
                         onClick={() => handleMove([0, 2])}
@@ -207,7 +207,7 @@ function Code() {
                         {returnXorOorSpace([0, 2])}
                     </button>
                     <button
-                        className="p-5 w-[100px] h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
+                        className="sm:p-5 w-[50px] sm:w-[100px] h-[50px] sm:h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
                         type="text"
                         name="4"
                         onClick={() => handleMove([1, 0])}
@@ -215,7 +215,7 @@ function Code() {
                         {returnXorOorSpace([1, 0])}
                     </button>
                     <button
-                        className="p-5 w-[100px] h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
+                        className="sm:p-5 w-[50px] sm:w-[100px] h-[50px] sm:h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
                         type="text"
                         name="5"
                         onClick={() => handleMove([1, 1])}
@@ -223,7 +223,7 @@ function Code() {
                         {returnXorOorSpace([1, 1])}
                     </button>
                     <button
-                        className="p-5 w-[100px] h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
+                        className="sm:p-5 w-[50px] sm:w-[100px] h-[50px] sm:h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
                         type="text"
                         name="6"
                         onClick={() => handleMove([1, 2])}
@@ -231,7 +231,7 @@ function Code() {
                         {returnXorOorSpace([1, 2])}
                     </button>
                     <button
-                        className="p-5 w-[100px] h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
+                        className="sm:p-5 w-[50px] sm:w-[100px] h-[50px] sm:h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
                         type="text"
                         name="7"
                         onClick={() => handleMove([2, 0])}
@@ -239,7 +239,7 @@ function Code() {
                         {returnXorOorSpace([2, 0])}
                     </button>
                     <button
-                        className="p-5 w-[100px] h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
+                        className="sm:p-5 w-[50px] sm:w-[100px] h-[50px] sm:h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
                         type="text"
                         name="8"
                         onClick={() => handleMove([2, 1])}
@@ -247,7 +247,7 @@ function Code() {
                         {returnXorOorSpace([2, 1])}
                     </button>
                     <button
-                        className="p-5 w-[100px] h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
+                        className="sm:p-5 w-[50px] sm:w-[100px] h-[50px] sm:h-[100px] m-auto border bg-sky-300 rounded-lg border-sky-400"
                         type="text"
                         name="9"
                         onClick={() => handleMove([2, 2])}
@@ -257,7 +257,7 @@ function Code() {
                 </div>
 
                 <button
-                    className="p-5 text-sky-800 w-[540px] h-[75px]  m-auto border border-sky-500 text-xl rounded-full bg-sky-200 transition-transform duration-700 ease-in-out  hover:scale-105"
+                    className="p-2 sm:p-5 text-sky-800 w-[270px] sm:w-[540px] h-[40px] sm:h-[75px] mt-5 sm:mt-auto mb-52 sm:mb-auto sm:m-auto border border-sky-500 sm:text-xl rounded-full bg-sky-200 transition-transform duration-700 ease-in-out  hover:scale-105"
                     onClick={handleStartPetition}
                     disabled={gameStarted}
                 >
