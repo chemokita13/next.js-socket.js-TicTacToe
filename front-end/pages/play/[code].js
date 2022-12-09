@@ -160,7 +160,7 @@ function Code() {
 
                 <div className="absolute bg-sky-900 grid grid-rows-3 grid-cols-3 w-[270px] sm:w-[540px] h-[270px] sm:h-[540px] border rounded-xl p-5 gap-5  my-12 sm:my-16 border-sky-500 text-3xl sm:text-5xl text-center font-sans text-sky-600">
                     <button
-                        className="p-5 w-[50px] sm:w-[100px] h-[50px] sm:h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
+                        className="sm:p-5 w-[50px] sm:w-[100px] h-[50px] sm:h-[100px]  m-auto border bg-sky-300 rounded-lg border-sky-400"
                         type="text"
                         name="1"
                         onClick={() => handleMove([0, 0])}
