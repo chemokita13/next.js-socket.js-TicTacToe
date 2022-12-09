@@ -71,11 +71,11 @@ export default function Home() {
                 <input
                     type="text"
                     className="w-1/2 m-2 placeholder:text-center placeholder:text-sky-700 p-1 rounded-xl bg-sky-300 text-center text-sky-600 font-semibold"
-                    placeholder="Enter a code to share to your friend and start a party"
+                    placeholder="Enter a code to create a room"
                     onChange={(e) => setInputCodeValue(e.target.value)}
                 />
                 <button
-                    className="w-[200px] p-3 bg-sky-500 border border-sky-600 text-sky-200 font-extrabold m-1 rounded-full"
+                    className="w-[200px] p-3 bg-sky-500 border border-sky-600 text-sky-200 font-extrabold m-1 rounded-full transition-transform duration-700 ease-in-out  hover:scale-105"
                     onClick={handleSubmitButton}
                 >
                     Play

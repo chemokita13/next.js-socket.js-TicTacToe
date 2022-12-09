@@ -257,7 +257,7 @@ function Code() {
                 </div>
 
                 <button
-                    className="p-5 text-sky-800 w-[540px] h-[75px]  m-auto border border-sky-500 text-xl rounded-full bg-sky-200"
+                    className="p-5 text-sky-800 w-[540px] h-[75px]  m-auto border border-sky-500 text-xl rounded-full bg-sky-200 transition-transform duration-700 ease-in-out  hover:scale-105"
                     onClick={handleStartPetition}
                     disabled={gameStarted}
                 >
