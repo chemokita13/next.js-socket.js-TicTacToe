@@ -61,10 +61,10 @@ export default function Home() {
             <div className=" flex flex-col text-center items-center mb-72 cursor-default">
                 <header className="bg-sky-900 w-[300px] xs:w-[400px] h-[150px] border rounded-xl border-sky-500 text-center font-sans text-sky-600 text-3xl xs:text-4xl font-extrabold m-3 flex items-center justify-center">
                     <div className="border bg-sky-300 rounded-lg border-sky-400 flex items-center justify-center m-1 p-1 w-[75px] xs:w-[100px] h-[75px] xs:h-[100px]">
-                        Tik
+                        Tic
                     </div>
                     <div className="border bg-sky-300 rounded-lg border-sky-400 flex items-center justify-center m-1 p-1 w-[75px] xs:w-[100px] h-[75px] xs:h-[100px]">
-                        Tak
+                        Tac
                     </div>
                     <div className="border bg-sky-300 rounded-lg border-sky-400 flex items-center justify-center m-1 ml-3 p-1 w-[75px] xs:w-[100px] h-[75px] xs:h-[100px] -rotate-12">
                         <div className="rotate-12">Toe</div>
